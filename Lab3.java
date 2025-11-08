@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         List<Path> files;
-        ConcurrentMap<String, Set<String>> classes = new ConcurrentHashMap<>();
+        Map<String, Set<String>> classes = new HashMap<>();
 
         try (Stream<Path> stream = Files.walk(Paths.get("spring-framework"))) {
             files = stream.filter(p -> p.toString().endsWith(".java")).toList();
@@ -61,9 +61,14 @@ public class Main {
 
         latch.await();
 
-         classes.entrySet().stream()
+        classes.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue() + " size -> " + e.getValue().size()));
+
+        long totalImplementations = classes.values().stream()
+                .mapToInt(Set::size)
+                .sum();
+        System.out.println("Всего реализаций: " + totalImplementations);
     }
 
 }
