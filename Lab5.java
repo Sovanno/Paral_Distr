@@ -72,6 +72,11 @@ public class Main {
         classes.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .forEach(e -> System.out.println(e.getKey() + " -> " + e.getValue() + " size -> " + e.getValue().size()));
+
+        long totalImplementations = classes.values().stream()
+                .mapToInt(Set::size)
+                .sum();
+        System.out.println("Всего реализаций: " + totalImplementations);
     }
 
 }
